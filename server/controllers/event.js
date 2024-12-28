@@ -3,7 +3,7 @@ const Event = require('../models/Event');
 // Yeni etkinlik oluştur
 const createEvent = async (req, res) => {
     try {
-        const { title, description, date, location, badge, qrCode } = req.body;
+        const { title, description, date, location, badge, qrCode,image } = req.body;
         const organizer = req.user.id;
 
         const newEvent = new Event({
