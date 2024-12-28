@@ -220,9 +220,9 @@ router.post('/:id/likes', verifyToken, toggleLike);
 
 /**
  * @swagger
- * /forums/{id}/likes:
+ * /forums/{id}/disslikes:
  *   post:
- *     summary: Toggle like on a forum post
+ *     summary: Toggle disslike on a forum post
  *     tags: [Forums]
  *     security:
  *       - bearerAuth: []
