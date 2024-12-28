@@ -29,7 +29,16 @@ const createEvent = async (req, res) => {
 const getEvents = async (req, res) => {
     try {
         const events = await Event.find().populate('organizer', 'name email').populate('badge');
-        res.status(200).json(events);
+
+        const eventsWithFileName = events.map(event => {
+            const fileName = event.filePath ? path.basename(event.filePath) : null;
+            return {
+                ...event.toObject(),
+                fileName, // fileName alanını ekle
+            };
+        });
+
+        res.status(200).json(eventsWithFileName);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -45,7 +54,9 @@ const getEventById = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
-        res.status(200).json(event);
+        const fileName = event.filePath ? path.basename(event.filePath) : null;
+
+        res.status(200).json({ ...event.toObject(), fileName });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -54,7 +65,7 @@ const getEventById = async (req, res) => {
 // Aktif kullanıcının etkinliklerini listele
 const getMyEvents = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.id;Z
         const events = await Event.find({ organizer: userId });
         res.status(200).json(events);
     } catch (error) {
