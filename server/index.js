@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swaggerOptions"); // Swagger ayarlarını aldığınız dosya
+const path = require('path');
 
 // Uygulama ayarları
 dotenv.config();
