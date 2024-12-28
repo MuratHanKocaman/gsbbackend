@@ -1,5 +1,5 @@
 const Badge = require('../models/Badge');
-const FileUpload = require('../models/FileUpload'); // FileUpload modelini dahil edin
+const FileUpload = require('../models/FileUpload');
 
 // Yeni rozet oluştur
 const createBadge = async (req, res) => {
@@ -14,14 +14,7 @@ const createBadge = async (req, res) => {
         });
 
         const savedBadge = await newBadge.save();
-        const populatedBadge = await Badge.findById(savedBadge._id).populate('icon', 'filePath');
-
-        const response = {
-            ...populatedBadge.toObject(),
-            filename: populatedBadge.icon?.filePath ? populatedBadge.icon.filePath.split('/').pop() : null,
-        };
-
-        res.status(201).json(response);
+        res.status(201).json(savedBadge);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -33,7 +26,7 @@ const getBadges = async (req, res) => {
         const badges = await Badge.find().populate('icon', 'filePath');
         const response = badges.map(badge => ({
             ...badge.toObject(),
-            filename: badge.icon?.filePath ? badge.icon.filePath.split('/').pop() : null,
+            filename: badge.icon?.filePath ? path.basename(badge.icon.filePath) : null,
         }));
 
         res.status(200).json(response);
@@ -54,7 +47,7 @@ const getBadgeById = async (req, res) => {
 
         const response = {
             ...badge.toObject(),
-            filename: badge.icon?.filePath ? badge.icon.filePath.split('/').pop() : null,
+            filename: badge.icon?.filePath ? path.basename(badge.icon.filePath) : null,
         };
 
         res.status(200).json(response);
@@ -69,17 +62,12 @@ const updateBadge = async (req, res) => {
         const { id } = req.params;
         const updates = req.body;
 
-        const updatedBadge = await Badge.findByIdAndUpdate(id, updates, { new: true }).populate('icon', 'filePath');
+        const updatedBadge = await Badge.findByIdAndUpdate(id, updates, { new: true });
         if (!updatedBadge) {
             return res.status(404).json({ message: 'Badge not found' });
         }
 
-        const response = {
-            ...updatedBadge.toObject(),
-            filename: updatedBadge.icon?.filePath ? updatedBadge.icon.filePath.split('/').pop() : null,
-        };
-
-        res.status(200).json(response);
+        res.status(200).json(updatedBadge);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
