@@ -1,4 +1,6 @@
 const Event = require('../models/Event');
+const FileUpload = require('../models/FileUpload');
+const path = require('path');
 
 // Yeni etkinlik oluştur
 const createEvent = async (req, res) => {
