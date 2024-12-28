@@ -1,5 +1,6 @@
 const Badge = require('../models/Badge');
 const FileUpload = require('../models/FileUpload');
+const path = require('path');
 
 // Yeni rozet oluştur
 const createBadge = async (req, res) => {
