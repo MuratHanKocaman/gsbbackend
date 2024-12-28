@@ -1,3 +1,4 @@
+const Badge = require('../models/Badge');
 const FileUpload = require('../models/FileUpload'); // FileUpload modelini dahil edin
 
 // Yeni rozet oluştur
