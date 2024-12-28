@@ -81,6 +81,7 @@ app.use("/badges", badgeRoutes); // Rozet İşlemleri
 app.use("/forums", forumRoutes); // Forum İşlemleri
 app.use("/fileupload", fileuploadRoutes);  // Dosya Yükleme İşlemleri
 app.use("/complaints", complaintRoutes);  // Şikayet İşlemleri
+app.use('/files', express.static(path.join(__dirname, 'files')));
 
 // Hataları yakala
 app.use((err, req, res, next) => {
