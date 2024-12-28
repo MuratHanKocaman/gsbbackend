@@ -14,7 +14,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:5000',
+                url: 'http://176.96.131.145:5000',
                 description: 'Development server',
             },
         ],
