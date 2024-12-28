@@ -30,19 +30,28 @@ const getEvents = async (req, res) => {
     try {
         const events = await Event.find().populate('organizer', 'name email').populate('badge');
 
-        const eventsWithFileName = events.map(event => {
-            const fileName = event.filePath ? path.basename(event.filePath) : null;
-            return {
-                ...event.toObject(),
-                fileName, // fileName alanını ekle
-            };
-        });
+        const eventsWithFileName = await Promise.all(
+            events.map(async (event) => {
+                let fileName = null;
+                if (event.image) {
+                    const fileUpload = await FileUpload.findById(event.image);
+                    if (fileUpload && fileUpload.filePath) {
+                        fileName = path.basename(fileUpload.filePath);
+                    }
+                }
+                return {
+                    ...event.toObject(),
+                    fileName,
+                };
+            })
+        );
 
         res.status(200).json(eventsWithFileName);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // ID ile etkinlik getir
 const getEventById = async (req, res) => {
@@ -54,13 +63,21 @@ const getEventById = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
-        const fileName = event.filePath ? path.basename(event.filePath) : null;
+        // Dosya adını almak için FileUpload modelini kullan
+        let fileName = null;
+        if (event.image) {
+            const fileUpload = await FileUpload.findById(event.image);
+            if (fileUpload && fileUpload.filePath) {
+                fileName = path.basename(fileUpload.filePath);
+            }
+        }
 
         res.status(200).json({ ...event.toObject(), fileName });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // Aktif kullanıcının etkinliklerini listele
 const getMyEvents = async (req, res) => {
