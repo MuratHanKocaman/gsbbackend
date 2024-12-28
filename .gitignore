@@ -29,10 +29,6 @@ coverage/
 *.sublime-workspace
 *.sublime-project
 
-# Environment variables
-.env
-.env.local
-.env.*.local
 
 # Temporary files
 tmp/
