@@ -138,9 +138,9 @@ const toggledisslike = async (req, res) => {
 
         const index = post.disslikes.indexOf(userId);
         if (index === -1) {
-            post.likes.push(userId);
+            post.disslikes.push(userId);
         } else {
-            post.likes.splice(index, 1);
+            post.disslikes.splice(index, 1);
         }
 
         await post.save();
